@@ -9,9 +9,9 @@ mutation ($name: String!, $lastname: String!, $email: String!, $role: UserRole) 
 }
 
 {
-  "name": "Putin",
+  "name": "mail",
   "lastname": "Vova",
-  "email": "putin@mail.ru",
+  "email": "mail@mail.ru",
   "role": "buyer"
 }
 
@@ -26,7 +26,7 @@ mutation ($email: String!) {
 }
 
 {
-  "email": "putin@mail.ru"
+  "email": "mail@mail.ru"
 }
 
 <!-- Добавление квартиры -->
