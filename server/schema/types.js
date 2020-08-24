@@ -8,8 +8,9 @@ const {
 } = graphql
 
 const { UserRole, VoucherVariant } = require('./enums')
-
 const UserModel = require("../models/user")
+
+const DEFAULT_IMG = "https://www.événementiel.net/wp-content/uploads/2014/02/default-placeholder.png"
 
 const UserType = new GraphQLObjectType({
     name: "User",
@@ -31,13 +32,17 @@ const ApartmentType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
-        image: { type: GraphQLString },
+        image: {
+            type: GraphQLString,
+            defaultValue: DEFAULT_IMG
+        },
         price: { type: GraphQLInt },
         numberOfRooms: { type: GraphQLInt },
         checkInDate: { type: GraphQLString },
         checkOutDate: { type: GraphQLString },
         user: {
             type: UserType,
+            defaultValue: null,
             resolve({ userId }, args) {
                 return UserModel.findById(userId)
             }
@@ -51,7 +56,10 @@ const VoucherType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         description: { type: GraphQLString },
-        image: { type: GraphQLString },
+        image: {
+            type: GraphQLString,
+            defaultValue: DEFAULT_IMG
+        },
         price: { type: GraphQLInt },
         quantity: { type: GraphQLInt },
         variant: {
@@ -60,6 +68,7 @@ const VoucherType = new GraphQLObjectType({
         },
         user: {
             type: UserType,
+            defaultValue: null,
             resolve({ userId }, args) {
                 return UserModel.findById(userId)
             }

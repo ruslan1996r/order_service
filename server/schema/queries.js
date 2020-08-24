@@ -5,16 +5,32 @@ const {
     GraphQLString,      // тип строки
     GraphQLSchema,      // конструктор для Query, который идёт на экскорт
     GraphQLInt,         // целые числа
-    GraphQLList,        // для выведения списка внутри другой сущности
+    GraphQLList,        // для выведения списка внутри другой сущности // { type: new GraphQLList(GraphQLString) } - массив строк
     GraphQLID,          // он может быть числом, строкой, чем угодно
     GraphQLNonNull,     // помечает поле как обязательное
 } = graphql
 
-const { UserRole, VoucherVariant } = require('./enums')
 const { UserType, ApartmentType, VoucherType } = require("./types")
+const { VoucherVariant } = require('./enums')
 const UserModel = require('../models/user')
 const ApartmentModel = require('../models/apartment')
 const VoucherModel = require('../models/voucher')
+
+function getFindParams(arguments) {
+    const filters = {}
+    for (arg in arguments) {
+        if (arguments[arg]) {
+            if (arg === "checkInDate") {
+                filters[arg] = { $lte: arguments[arg] }
+            } else if (arg === "checkOutDate") {
+                filters[arg] = { $gte: arguments[arg] }
+            } else {
+                filters[arg] = arguments[arg]
+            }
+        }
+    }
+    return filters
+}
 
 const Query = new GraphQLObjectType({
     name: "Query",
@@ -41,10 +57,27 @@ const Query = new GraphQLObjectType({
             }
         },
         apartments: {
-            type: ApartmentType,
-            args: {},
-            resolve() {
-                return
+            type: new GraphQLList(ApartmentType),
+            args: {
+                checkInDate: { type: GraphQLString }, // день заселения
+                checkOutDate: { type: GraphQLString }, // день выселения
+                price: { type: GraphQLInt },
+                numberOfRooms: { type: GraphQLInt }
+            },
+            resolve(parent, args) {
+                const findParams = getFindParams(args)
+                return ApartmentModel.find(findParams)
+            }
+        },
+        vouchers: {
+            type: new GraphQLList(VoucherType),
+            args: {
+                variant: { type: VoucherVariant },
+                quantity: { type: GraphQLInt }
+            },
+            resolve(parent, args) {
+                const findParams = getFindParams(args)
+                return VoucherModel.find(findParams)
             }
         }
     }
