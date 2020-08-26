@@ -22,8 +22,8 @@ function Apartments(props: any) {
     return (
         <>
             <h1 className="text-center">Apartments</h1>
-            <button style={{ right: "1em" }} type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Add apart</button>
-            <AddModal addApart={addApartmentThunk}/>
+            {user.role === "seller" && <><button style={{ right: "1em" }} type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Add apart</button>
+            <AddModal addApart={addApartmentThunk}/></>}
             <ApartmentFilter filterFunction={getApartmentsThunk} userRole={user.role} />
             {apartments.length? <div className="row row-cols-2">
                 {apartments.map((apartment: Apartment) => {

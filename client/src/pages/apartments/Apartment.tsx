@@ -44,11 +44,11 @@ function Apartment(props: any) {
         <div className="col card" style={{ padding: "1em", maxWidth: "48%", margin: "1%" }}>
             {!editMode.value ?
             <>
-                <button
+                {userRole==="seller" && <button
                     style={{ right: "1em" }}
                     type="button" className="btn btn-primary position-absolute"
                     onClick={changeEdit}
-                >Edit</button>
+                >Edit</button>}
                 <h3>Name: {name}</h3>
                 <p>Description: <strong>{description}</strong></p>
                 <p>Price: <strong>{price}</strong></p>
