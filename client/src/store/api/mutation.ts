@@ -3,6 +3,7 @@ import { gql } from "apollo-boost"
 export const registerUser = gql`
     mutation ($name: String!, $lastname: String!, $email: String!, $role: UserRole) {
     registerUser(name: $name, lastname: $lastname, email: $email, role: $role) {
+        id
         name
         lastname
         email
@@ -13,6 +14,7 @@ export const registerUser = gql`
 export const loginUser = gql`
     mutation ($email: String!) {
     loginUser(email: $email) {
+        id
         name
         lastname
         email
@@ -32,12 +34,18 @@ mutation ($name: String!, $description: String!, $image: String, $price: Int!, $
     numberOfRooms
     checkInDate
     checkOutDate
+    user {
+        id
+        name
+        lastname
+        email
+      }
   }
 }
 `
 
 export const editApartment = gql`
-mutation ($id: ID, $name: String!, $description: String!, $image: String, $price: Int!, $numberOfRooms: Int!, $checkInDate: String!, $checkOutDate: String!) {
+mutation ($id: ID!, $name: String!, $description: String!, $image: String!, $price: Int!, $numberOfRooms: Int!, $checkInDate: String!, $checkOutDate: String!) {
   editApartment(id: $id, name: $name, description: $description, image: $image, price: $price, numberOfRooms: $numberOfRooms, checkInDate: $checkInDate, checkOutDate: $checkOutDate) {
     id
     name
@@ -47,6 +55,12 @@ mutation ($id: ID, $name: String!, $description: String!, $image: String, $price
     numberOfRooms
     checkInDate
     checkOutDate
+    user {
+        id
+        name
+        lastname
+        email
+      }
   }
 }
 `
